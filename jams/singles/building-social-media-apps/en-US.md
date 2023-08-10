@@ -3,14 +3,14 @@ title: 'Building Your Own Social Media w/ 🔥 Firebase 🏰'
 description: >
     At the end of this jam, you'll create your very own social media app that handles users and posts.
 contributor: "InternetRamen"
-thumbnail: "https://cloud-jmxqm5zoe-hack-club-bot.vercel.app/0image.png"
+thumbnail: "https://cloud-bo51u70qw-hack-club-bot.vercel.app/0slide_16_9_-_3.png"
 timeEstimate: "60 Min"
 difficulty: "Intermediate"
 keywords: "Web, App, Website, JavaScript"
 language: "HTML & JS"
-presentation: ""
-presentationPlay: ""
-presentationPDF: ""
+presentation: "https://www.figma.com/file/erQf158AHyOtwmEqWUyI1p/Building-your-own-social-media-app?type=design&node-id=2%3A2&mode=design&t=hpquuvbUlSrQk1HU-1"
+presentationPlay: "https://www.figma.com/proto/erQf158AHyOtwmEqWUyI1p/Building-your-own-social-media-app?type=design&node-id=2-4&t=UixZlCs2fBTa1TgT-1&scaling=contain&page-id=2%3A2&mode=design"
+presentationPDF: "https://cloud-hl5mkgjy0-hack-club-bot.vercel.app/0building_your_own_social_media_app.pdf"
 notes: ""
 poster: ""
 video: ""
@@ -41,7 +41,7 @@ Ideally, you have a basic understanding of HTML, CSS, and JavaScript, but if thi
 <Dropdown title="Brain Fact!">
 The human brain weighs 3 pounds
 </Dropdown>
-The foundation of any social media app is creating and loading some sort of post. Think of any popular social media (Instagram, Reddit, YouTube, or even a recipe app)
+The foundation of any social media app is creating and loading some sort of post. Think of any popular social media (Instagram, Reddit, YouTube, or even a recipe app). Share your ideas with the club!
 
 ## Setting up
 
@@ -416,6 +416,3 @@ That's it! Now you have a working social media app. It's your job to add CSS, mo
  - Change how posts are loaded
  - Change fields
  - Add cosmetic elements
- - ...
-
-*draft 2*

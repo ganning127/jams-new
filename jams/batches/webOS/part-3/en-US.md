@@ -12,18 +12,20 @@ timeEstimate: '30 Min'
 difficulty: Intermediate
 keywords: 'Web, os, personalOS, webOS, website, javascript, html, css, replit'
 language: 'HTML & CSS'
-presentation: 'https://www.figma.com/file/iDvJOOXk4chMZQlIIIaDuU/SprigWorkshop?type=design&node-id=239%3A1286&mode=design&t=5cwsXCx3QrutYqAB-1'
-presentationPlay: 'https://www.figma.com/proto/iDvJOOXk4chMZQlIIIaDuU/SprigWorkshop?page-id=239%3A1286&type=design&node-id=243-10232&viewport=1172%2C132%2C0.14&t=Sn3rVs7ua8lHiFmk-1&scaling=contain&starting-point-node-id=243%3A10232&mode=design'
-presentationPDF: 'https://cloud-biw2lgdxz-hack-club-bot.vercel.app/0sprigworkshop.pdf'
+presentation: 'https://www.figma.com/file/KxIYo80ojSHmEisOtn6MqC/webOSPart3?type=design&node-id=0%3A1&mode=design&t=oo06lQb0NF9vKcpc-1'
+presentationPlay: 'https://www.figma.com/proto/KxIYo80ojSHmEisOtn6MqC/webOSPart3?page-id=0%3A1&type=design&node-id=1-2&viewport=-3713%2C136%2C0.13&t=wIV03vQshi9kngPz-1&scaling=contain&starting-point-node-id=1%3A2&mode=design'
+presentationPDF: 'https://cloud-6elyts7vs-hack-club-bot.vercel.app/0webospart3.pdf'
 notes: 'https://cloud-o944bwtfx-hack-club-bot.vercel.app/0a_parent_s_guide_to_epoch.pdf'
 poster: 'https://cloud-o944bwtfx-hack-club-bot.vercel.app/0a_parent_s_guide_to_epoch.pdf'
 video: 'https://cloud-cq9o4h1mp-hack-club-bot.vercel.app/0movie_on_7-7-23_at_10.08_am.mp4'
+totalParts: 5
 ---
 
 Surpassed my expectations, young one, you have. Confront your fears, you must, for a Jedi JavaScript master you have the potential to become.
  
 Today we're going to be making our windows movable and throwing in some JavaScript magic (you'll see later what I mean by this).  Here's what that looks like:
 
+![Sample Outcome Gif](https://cloud-1v30rbp0i-hack-club-bot.vercel.app/00gif.gif)
 
 **Outline:**
 1. **Organizing Our Logic**
@@ -33,7 +35,11 @@ Today we're going to be making our windows movable and throwing in some JavaScri
 5. **Organizing Our Styles**
 
 ## Organizing Our Logic
-Our index.html file is getting a bit messy. As a reminder, this is what my code looked like at the end of the last Jam:
+Our index.html file is getting a bit messy. Let's try splitting our Logic (JavaScript) from our Content (HTML) by moving the JavaScript code to it's own `script.js` file.
+
+![splitting files](https://cloud-pfegd9qpz-hack-club-bot.vercel.app/0twofiles.gif)
+
+As a reminder, this is what my code looked like at the end of the last Jam:
 <Dropdown title="My Code (pls don't copy paste)">
 ```html
 <!DOCTYPE html>
@@ -242,13 +248,18 @@ Awesome
 
 ![Handle Added](https://cloud-l4ck638kz-hack-club-bot.vercel.app/0osmove.gif)
 
-Now it's time for you to customize your handle and make it look hover you'd like. Here are some ideas:
+<Comment githubUser="jianmin-chen">
+Hey... the creator of this Jam missed out on a huge upgrade to the site, but dw, I'll let you in on the inside scoop. You can avoid annoying underlining of the handle text on drag by adding `user-select: none;` & `cursor: grab;`
+</Comment>
+
+Now it's time for you to customize your handle and make it look hover you'd like. Perhaps:
+
 1) Add an icon as an image that conveys that the window can be dragged from that point
 2) Place the handle in the div at the top and style similar to a traditional window
 3) Make the "Handle" text look quite cool and leave it as text
 4) Make it look like a door handle
 
-Note: I highly suggest adding the style property of cursor: move or cursor: grab to your welcomeheader div to make it clear to users that it can be dragged\. 
+
 
 Here's what I decided to do (I hope yours looks nothing like this)
 ![Window Screen Effect](https://cloud-n6ytrol13-hack-club-bot.vercel.app/0gif.gif)
@@ -275,20 +286,13 @@ Here's what I decided to do (I hope yours looks nothing like this)
 ```
 </Dropdown>
 
-*~-~-~-~-~-~-~-~-~-~-*
-**A SPONTANEOUS HACKER NAMED JC APPEARS.**
 
-JC: "Hey... the creator of this Jam missed out on a huge upgrade to the site, but dw, I'll let you in on the inside scoop. You can avoid annoying underlining of the handle text on drag by adding `user-select: none;` & `cursor: grab;`
-
-**JC OUT**  
-_JC Spontaneously disappears_
-*~-~-~-~-~-~-~-~-~-~-*
 
 ## Opening & Closing The Window
 
 Alright, so let's break down this challenge
 1) We need a way to toggle whether the window is visible
-	* We can use the display property (which has the property of none)
+	* We can use the display property (which can be set to none)
 
 2) We need to create a function to open the window 
 	* We can pass in an element and enable its visibility

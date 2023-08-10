@@ -1,12 +1,12 @@
 ---
 part: part-4
-title: 'Wrapping Up With Your Game and Creating a Pull Request'
+title: 'Maze Game (Part 3/3): Polish & Submit a Pull Request to the Gallery'
 batch: 'sprig'
 description: >
   Get started making your very first game with the Sprig game engine! Even if you're a beginner, you'll walk out of this jam with your very own game in the Gallery.
 contributor: 'recursiveforte'
-thumbnail: ''#TODO
-timeEstimate: '100-120 Min'
+thumbnail: 'https://cloud-12cp8tilo-hack-club-bot.vercel.app/0fork.png'
+timeEstimate: '30 Min'
 difficulty: 'Beginner'
 keywords: 'Sprig, Games, Game'
 language: 'JavaScript'
@@ -16,6 +16,7 @@ presentationPDF: ""
 notes: "" 
 poster: ""
 video: "" 
+totalParts: 4
 ---
 
 Congratulations! If you finished the last part of the Jam and implemented two different game mechanics, you've just created an entirely unique game and learned to implement different game mechanics on your own!

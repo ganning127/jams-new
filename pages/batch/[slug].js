@@ -5,11 +5,13 @@ import { useRouter } from 'next/router';
 import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemote } from 'next-mdx-remote'
 import Header from '@/components/Header'
-import { Container, Grid } from 'theme-ui'
+import { Container, Grid, Link } from 'theme-ui'
 import PreviewCard from '@/components/PreviewCard'
 import Footer from '@/components/Footer';
 import { useState } from 'react'
 import JamComponent from '@/components/JamComponent';
+import Meta from '@hackclub/meta'
+import Head from 'next/head'
 
 function getJams(fs, directory) {
   const filenames = fs.readdirSync(directory);
@@ -89,9 +91,21 @@ export default function Page({ batch, params, jams }) {
 
     const router = useRouter();
   return     <div>
+  <Meta
+  as={Head}
+  name={batch.title}
+  title={batch.title}
+  description={batch.description}
+  image={batch.thumbnail}
+  color="#ec3750"
+/>
   <Header setQuery={setQuery} query={query} jams={jams.singles} back={`/`} />
 
 <Container sx={{paddingTop: "96px"}}>
+  <Container sx={{ p:"1rem"}} style={{ maxWidth:"64rem !important"}}>
+    {/* Structure: root / batch name / part */}
+    <Link href="/" sx={{ color: "#993CCF", textDecoration: "underline" }}>batch</Link> / <Link href={"/batch/" + batch.slug} sx={{ color: "#993CCF", textDecoration: "underline" }}>{batch.slug}</Link>
+  </Container>
 <Grid sx={{marginBottom: "32px"}} columns={[null, '3fr 2fr']} gap={[1,32]}>
 <img style={{width: "100%", borderRadius: "16px"}} src={batch.thumbnail}/>
     <div>
