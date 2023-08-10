@@ -76,7 +76,10 @@ function Slides({router, initialFeatures}) {
   const [active, setActive] = useState(Math.floor(initialFeatures.length / 2))
 
   const [features, setFeatures] = useState(initialFeatures);
-  function moveRight() {
+
+
+
+    function moveRight() {
     const copyOfFeatures = [...features];
   
     const firstValue = copyOfFeatures.shift();
@@ -270,9 +273,12 @@ export default function Index(props) {
 
   const isCategoryBarSticky = useStickyCategoryBar();
 
-  const categories = ["Web", "Game", "Crypto", "Art", "Python", "3D", "AI/ML"]
-  const [selectedCategory, setSelectedCategory] = useState("")
+  const categories = ["Web", "Game", "Crypto", "Art", "Python", "3D", "AI"]
+  const [selectedCategories, setSelectedCategories] = useState([])
   const [query, setQuery] = useState("")
+  const [difficulty, setDifficulty] = useState("");
+  const [time, setTime] = useState("");
+
   const [filter, setFilter] = useState('')
   const [language, setLanguage] = useState('')
   const [timeEstimate, settimeEstimate] = useState('') 
@@ -281,17 +287,86 @@ export default function Index(props) {
   const router = useRouter();
 
 
-  const batches = [... props.jamsContent.batches]
+  const batches = props.jamsContent.batches
+  .filter(batch => {
+
+    if(batch.difficulty?.toLowerCase() != difficulty && difficulty != "") {
+  
+      return false
+    }
+      
+    if(batch.timeEstimate != time && time != "") {
+  
+      return false
+    }
+    
+    // Check if any value in batch's values contains all words in the query
+    const batchValues = Object.values(batch);
+    const queryWords = query.toLowerCase().trim().split(" ");
+  
+    for (let singleBatchValue = 0; singleBatchValue < batchValues.length; singleBatchValue++) {
+      let successful = true;
+  
+      const batchValueAsString = String(batchValues[singleBatchValue]).toLowerCase(); // Convert to string
+      const batchValueWords = batchValueAsString.split(" ");
+  
+      for (let singleWord = 0; singleWord < queryWords.length; singleWord++) {
+        if (batchValueWords.indexOf(queryWords[singleWord]) === -1) {
+          successful = false;
+        }
+      }
+  
+      if (successful) {
+        // Apply other conditions and return the result
+        return !batch?.keywords?.includes("Beta") && (batch?.keywords?.split(",")?.some((keyword) => selectedCategories.includes(keyword)) || selectedCategories == [] || selectedCategories == undefined || selectedCategories == "") // display it if other attributes work
+      }
+    }
+  
+    return false;
+  });
   const jams = props.jamsContent.singles
   .filter((jam) => 
 { 
-  return (!jam.keywords.includes("Beta") && jam?.keywords?.includes(selectedCategory) && Object.values(jam).some((value) => value.toLowerCase().includes(query.toLowerCase().split(" "))))
+  /* check if it is true that:
+      for some value in jam's values
+      every part of the query is contained within that value*/
+  var jamValues = Object.values(jam); // indicates each value that exists in the jam dict
+  var queryWords = query.toLowerCase().trim().split(" "); // splits query into separate words and elimiates prefix and suffix whitespaces
+  
+  if(jam.difficulty?.toLowerCase() != difficulty && difficulty != "") {
+    console.log(jam.difficulty, difficulty)
+
+    return false
+  }
+    
+  if(jam.timeEstimate != time && time != "") {
+    console.log(jam.difficulty, difficulty)
+
+    return false
+  }
+
+  for (let singleJamValue = 0; singleJamValue < jamValues.length; singleJamValue++) { // iterates through the jam values
+    var successful = true; // assume it works
+    for (let singleWord = 0; singleWord < queryWords.length; singleWord++) { // iterates through the words in query
+      if ((jamValues[singleJamValue].toLowerCase().split(" ")).indexOf(queryWords[singleWord]) == -1) { // if ANY word in query is not found in the values
+        successful = false; // it is not working / not successful / wont be displayed
+      }
+    }
+    if (successful) { // if it is confirmed to be successful
+      return !jam?.keywords?.includes("Beta") && (jam?.keywords?.split(",")?.some((keyword) => selectedCategories.includes(keyword)) || selectedCategories == [] || selectedCategories == undefined || selectedCategories == "") // display it if other attributes work
+    }
+  }
+    return false; // it went here if no part of its values are successful, therefore it doesnt fit search criteria and is not shown
+    // dont consider other attributes, since it's AND logic, and one of the conditions alr didnt work
 }
   )
 
-  const features = [props.jamsContent.singles[3], props.jamsContent.singles[4], props.jamsContent.singles[0]]
-
-
+  const desiredSlugs = ["ai-travel", "online-store", "voxel-animation"];
+  const features = props.jamsContent.singles.filter(jam => desiredSlugs.includes(jam.slug));
+  
+  const desiredSlugsBatches = ["sprig", "webOS", "artificial-intelligence", "usb-hub"];
+  const fallFeatures = props.jamsContent.batches.filter(batch => desiredSlugsBatches.includes(batch.slug));
+  
 
   const [scrollPosition, setScrollPosition] = useState(0)
   useEffect(() => {
@@ -301,6 +376,8 @@ export default function Index(props) {
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+
 
   return (
     <>
@@ -330,6 +407,7 @@ export default function Index(props) {
         />
         <Image sx={{width: "100%", height: "100%", position: "absolute", mixBlendMode: "color-burn"}} src="https://cloud-omdlqtlig-hack-club-bot.vercel.app/0rectangle_60.png"/>
         <Header jams={jams} query={query} setQuery={setQuery} isHomePage={true} />
+        
         <Box
           sx={{ p: 4, textAlign: 'center',          marginTop: "64px",          position: 'relative', zIndex: 2,
            }}>
@@ -340,18 +418,20 @@ export default function Index(props) {
               fontSize: [48, 56, 96],
               textShadow: '0px 0px 64px 0px rgba(56, 10, 83, 0.75)',
               mb: 0,
+              mt: 0,
               lineHeight: 1,
               fontWeight: 400
             }}>
             Code Jams
           </Text>
-          <Box sx={{maxWidth: "100%", padding: [2, 4], textAlign: "center"}}>
+          <Box sx={{maxWidth: "100%", px: [2, 4], py: [2, 3], textAlign: "center"}}>
             <Text
               sx={{
                 textShadow: '0px 0px 32px 0px rgba(56, 10, 83, 0.50)',
                 fontSize: [16, 18, 24],
                 mt: 0,
                 lineHeight: 1.2,
+                pt: 0,
                 px: 3,
               }}>
               Collaborative coding workshops where sparks ignite, <br/>fears
@@ -361,11 +441,43 @@ export default function Index(props) {
           <Slides initialFeatures={features} router={router}/>
         </Box>
       </Box>
-      <Container sx={{ marginTop: '-72px' }}>
+      <Container sx={{ marginTop: '-132px', position: "relative", zIndex: 1 }}>
+        <Box sx={{backgroundColor: "#FDF5EC", border: "1px solid #F0924B", padding: "32px", borderRadius: "16px"}}>
+        <Text as="h2" sx={{ fontSize: 42, lineHeight: 1.2, fontWeight: 600, margin: 0, p: 0, zIndex: 2 }}>
+          New to Jams? Start Jamming! 🍁
+        </Text>
+        <Text as="h2" sx={{ fontSize: 24, fontWeight: 400, margin: 0, p: 0, zIndex: 2 }}>
+        Here are some Great Multi-part Jams to Kickoff Your Club  this Fall 🍂            </Text>
+        <Grid columns={[null, '1fr', '1fr 1fr', '1fr 1fr', '1fr 1fr']} gap={3} sx={{ pt: 4 }}>
+
+        {fallFeatures.map((fallFeature, idx) =>
+            <a style={{color: "#000", position: "relative", textDecoration: "none"}} href={`/batch/${fallFeature.slug}`}>
+                    {fallFeature.sticker && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: "-48px", // Adjust the top distance as needed
+              right: "-48px", // Adjust the right distance as needed
+              zIndex: 1,
+            }}
+          >
+            <img src={fallFeature.sticker} style={{width: "96px", height: "96px"}}/>
+          </Box>
+        )}
+            <PreviewCard 
+            style={{cursor: "pointer"}}
+            key={idx + fallFeature.title} light={true} {...fallFeature} />
+            </a>
+        )}
+        </Grid>
+        
+        </Box>
+        
         <Text as="h1" sx={{ fontSize: 48, fontWeight: 600, zIndex: 2 }}>
           Jams
         </Text>
-        <Text sx={{ fontSize: 24 }}>
+
+        {/* <Text sx={{ fontSize: 24 }}>
           Batches{' '}
           <Text
             sx={{
@@ -379,8 +491,8 @@ export default function Index(props) {
         <Grid columns={[null, '1fr', '1fr', '1fr 1fr']} gap={3} sx={{ py: 3 }}>
 
         {batches.map((batch) => 
+        <a style={{textDecoration: "none", color: "#000"}} href={`/batch/${batch.slug}`}>
           <Box
-          onClick={() => router.push(`/batch/${batch.slug}`)}
   sx={{
     position: "relative",
     cursor: "pointer",
@@ -478,15 +590,16 @@ export default function Index(props) {
     />
   </Box>
 </Box>
+</a>
 
 
 
         )}
-        </Grid>
+        </Grid> */}
       </Container>
       
       <Container>
-        <Text sx={{ fontSize: 24 }}>
+        {/* <Text sx={{ fontSize: 24 }}>
           Singles{' '}
           <Text
             sx={{
@@ -496,36 +609,180 @@ export default function Index(props) {
             }}>
             (one-part Jams)
           </Text>
-        </Text>
+        </Text> */}
         
-        <Box style={{display: "flex",              top: 84, backgroundColor: "#fff", zIndex: 2,
+        <Box sx={{display: ["none", "none", "flex"],              top: 84, backgroundColor: "#fff", zIndex: 2,
           left: 0, opacity: `${Math.min(((scrollPosition / 500) - 1), 1)}`,        backdropFilter: 'blur(5px)',          backgroundColor: `rgba(200, 200, 200, ${Math.min(((scrollPosition / 500) - 1), 0.75)})`,
           right: 0, cursor: 'pointer', position: 'fixed', flexDirection: "row", borderColor: "#e0e6ed", borderTop: "1px solid #e0e6ed", borderBottom: "1px solid #e0e6ed"}}>
-        <Container>
+        <Container style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: 'center'}}>
+          <Box>
         <Badge
         key="all"
         mr={2}
-        sx={{ cursor: 'pointer', backgroundColor: selectedCategory == "" ? ("#993CCF") : ("#fff"), marginTop: "8px", marginBottom: "8px", fontSize: ["14px", "auto"] }} 
+        sx={{ cursor: 'pointer', backgroundColor: selectedCategories == "" ? ("#993CCF") : ("#fff"), marginTop: "8px", marginBottom: "8px", fontSize: ["14px", "auto"] }} 
         variant="outline"
-        color={selectedCategory == "" ? ("#fff") : ("#993CCF")}
-        onClick={() => setSelectedCategory("")}
+        color={selectedCategories == "" ? ("#fff") : ("#993CCF")}
+        onClick={() => {
+          setSelectedCategories([])
+          console.log(selectedCategories)
+        }}
         >
-                All
+                All 
 
       </Badge>
         {categories.map((category) =>
         <Badge
-        key="all"
+        key={category}
         mr={2}
-        sx={{backgroundColor: selectedCategory == category ? ("#993CCF") : ("#fff"), marginTop: "8px", marginBottom: "8px", fontSize: ["14px", "auto"] }} 
+        sx={{backgroundColor: selectedCategories.includes(category) ? ("#993CCF") : ("#fff"), marginTop: "8px", marginBottom: "8px", fontSize: ["14px", "auto"] }} 
         variant="outline"
-        color={selectedCategory == category ? ("#fff") : ("#993CCF")}
-        onClick={() => setSelectedCategory(category)}
+        color={selectedCategories.includes(category) ? ("#fff") : ("#993CCF")}
+        onClick={() => 
+          setSelectedCategories((currentCategories) => {
+            if (currentCategories.includes(category)) {
+              const updatedCategories = currentCategories.filter((cat) => cat !== category);
+              console.log(updatedCategories);
+              return updatedCategories;
+            } else {
+              const updatedCategories = [...currentCategories, category];
+              console.log(updatedCategories);
+              return updatedCategories;
+            }
+          })
+        }
         >
                 {category}
 
       </Badge>        
       )}
+      </Box>
+      <Box style={{display: "flex", flexDirection: "row", gap: "16px"}}>
+      <Box style={{ display: "flex", gap: "8px", backgroundColor: "#fff", padding: "4px 8px", borderRadius: "8px" }}>
+        <span
+          style={{
+            backgroundColor: difficulty === "" ? "#993CCF" : "#fff",
+            margin: "0px",
+            padding: "0px 8px",
+            color: difficulty === "" ? "#fff" : "#000",
+            borderRadius: "4px",
+            cursor: "pointer",
+            ':hover': {
+              backgroundColor: difficulty === "" ? "#993CCF" : "#EFEFEF",
+            },
+          }}
+          onClick={() => setDifficulty("")}
+        >
+          Any
+        </span>
+        <Text
+          sx={{
+            backgroundColor: difficulty === "beginner" ? "#993CCF" : "#fff",
+            margin: "0px",
+            padding: "0px 4px",
+            color: difficulty === "beginner" ? "#fff" : "#000",
+            borderRadius: "4px",
+            cursor: "pointer",
+            transition: 'background-color 0.3s, color 0.3s',
+            ':hover': {
+              backgroundColor: difficulty === "beginner" ? "#993CCF" : "#EFEFEF",
+            },
+          }}
+          onClick={() => setDifficulty("beginner")}
+        >
+          Beginner
+        </Text>
+        <Text
+          sx={{
+            backgroundColor: difficulty === "intermediate" ? "#993CCF" : "#fff",
+            margin: "0px",
+            padding: "0px 4px",
+            color: difficulty === "intermediate" ? "#fff" : "#000",
+            borderRadius: "4px",
+            cursor: "pointer",
+            transition: 'background-color 0.3s, color 0.3s',
+            ':hover': {
+              backgroundColor: difficulty === "intermediate" ? "#993CCF" : "#EFEFEF",
+            },
+          }}
+          onClick={() => setDifficulty("intermediate")}
+        >
+          Intermediate
+        </Text>
+        <Text
+          sx={{
+            backgroundColor: difficulty === "advanced" ? "#993CCF" : "#fff",
+            margin: "0px",
+            padding: "0px 4px",
+            color: difficulty === "advanced" ? "#fff" : "#000",
+            borderRadius: "4px",
+            cursor: "pointer",
+            transition: 'background-color 0.3s, color 0.3s',
+            ':hover': {
+              backgroundColor: '#EFEFEF',
+            },
+            ':hover': {
+              backgroundColor: difficulty === "advanced" ? "#993CCF" : "#EFEFEF",
+            },
+          }}
+          onClick={() => setDifficulty("advanced")}
+        >
+          Advanced
+        </Text>
+      </Box>
+
+      <Box style={{ display: "flex", gap: "8px", backgroundColor: "#fff", padding: "4px 8px", borderRadius: "8px" }}>
+        <span
+          style={{
+            backgroundColor: time === "" ? "#993CCF" : "#fff",
+            margin: "0px",
+            padding: "0px 8px",
+            color: time === "" ? "#fff" : "#000",
+            borderRadius: "4px",
+            cursor: "pointer",
+            ':hover': {
+              backgroundColor: time === "" ? "#993CCF" : "#EFEFEF",
+            },
+          }}
+          onClick={() => setTime("")}
+        >
+          Any
+        </span>
+        <Text
+          sx={{
+            backgroundColor: time === "30 Min" ? "#993CCF" : "#fff",
+            margin: "0px",
+            padding: "0px 4px",
+            color: time === "30 Min" ? "#fff" : "#000",
+            borderRadius: "4px",
+            cursor: "pointer",
+            transition: 'background-color 0.3s, color 0.3s',
+            ':hover': {
+              backgroundColor: time === "30 Min" ? "#993CCF" : "#EFEFEF",
+            },
+          }}
+          onClick={() => setTime("30 Min")}
+        >
+          30 Min
+        </Text>
+        <Text
+          sx={{
+            backgroundColor: time === "60 Min" ? "#993CCF" : "#fff",
+            margin: "0px",
+            padding: "0px 4px",
+            color: time === "60 Min" ? "#fff" : "#000",
+            borderRadius: "4px",
+            cursor: "pointer",
+            transition: 'background-color 0.3s, color 0.3s',
+            ':hover': {
+              backgroundColor: time === "60 Min" ? "#993CCF" : "#EFEFEF",
+            },
+          }}
+          onClick={() => setTime("60 Min")}
+        >
+          60 Min
+        </Text>
+      </Box>
+      </Box>
 </Container>
         </Box>
         {/* <SearchControls
@@ -538,16 +795,28 @@ export default function Index(props) {
           timeEstimate={timeEstimate}
           settimeEstimate={settimeEstimate}
         /> */}
-          {jams.length != 0 ? (<p style={{marginTop: 8, marginBottom: 0}}>{jams.length} Jams Found</p>) : (<p style={{marginTop: 8, marginBottom: 0}}>No Results Found</p>)}
-
+         
+        <Text style={{width: "100"}}> 
+          {jams.length + batches.length != 0 ? (<p style={{marginTop: 8, marginBottom: 0}}>{jams.length + batches.length} Jams Found</p>) : (<p style={{marginTop: 8, marginBottom: 0}}>No Results Found</p>)}
+          </Text>
         <Grid columns={[null, '1fr', '1fr 1fr', '1fr 1fr 1fr', '1fr 1fr 1fr']} gap={3} sx={{ py: 3 }}>
 
+
           {jams.map((jam, idx) => (
+            <a style={{color: "#000", textDecoration: "none"}} href={`/jam/${jam.slug}`}>
             <PreviewCard 
             style={{cursor: "pointer"}}
-            onClick={() => router.push(`/jam/${jam.slug}`)}
-            key={idx} light={true} {...jam} />
+            key={idx + jam.title} light={true} {...jam} />
+            </a>
           ))}
+                    {batches.
+                    map((batch, idx) =>
+            <a style={{color: "#000", textDecoration: "none"}} href={`/batch/${batch.slug}`}>
+            <PreviewCard 
+            style={{cursor: "pointer"}}
+            key={idx + batch.title} light={true} {...batch} />
+            </a>  
+          )}
         </Grid>
       </Container>
       <Footer />

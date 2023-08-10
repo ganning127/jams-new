@@ -3,10 +3,10 @@ title: 'Making a Custom Digital Snowglobe'
 description: >  
   This Jam leads participants through a journey of creating their very own custom digital snowglobe that can even react to device motion!
 contributor: 'VelocityDesign'  
-thumbnail: 'https://cloud-fw0djakcn-hack-club-bot.vercel.app/0snowglobe3__1_.png'
+thumbnail: 'https://cloud-7lof72m4o-hack-club-bot.vercel.app/0snowglobe2.gif'
 timeEstimate: '60 Min'
 difficulty: 'Intermediate'
-keywords: 'Snowglobe, Snow, Fun, website, javascript, HTML, CSS, replit, custom'
+keywords: 'Web, Snowglobe, Snow, Fun, website, javascript, HTML, CSS, replit, custom'
 language: 'HTML, JS'
 slug: 'custom-snowglobe'
 presentation: 'https://www.figma.com/proto/irzmIKLAgp2DC0Op6LL46d/Snowglobe?type=design&node-id=1-3&t=R9P5nSfR6B0jP1bd-1&scaling=contain&page-id=0%3A1&mode=design'

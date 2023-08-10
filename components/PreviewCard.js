@@ -14,11 +14,12 @@ export default function PreviewCard({
   timeEstimate,
   part = 0,
   light = true,
+  sticker,
+  totalParts=null,
+  parts=null,
   ...props
 }) {
   const [isHovered, setIsHovered] = useState(false);
-
-
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -31,9 +32,9 @@ export default function PreviewCard({
     <>
       <Box onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} style={{cursor: "pointer"}} {...props}>
         <Box sx={{ borderRadius: '16px' }}>
-        {isHovered ? (
+        {isHovered &&
         <Box sx={{position: "absolute", zIndex: 1, marginLeft: "8px", maxWidth: "420px", marginTop: "8px", display: 'flex', flexWrap: 'wrap'}}>
-        {part != "0" ? (
+        {part != "0" && (
         <Badge
         key="partFeature"
         mr={2}
@@ -43,7 +44,18 @@ export default function PreviewCard({
         >
                 Part {part.split("-")[1]}
 
-      </Badge>) : (<div></div>)}
+      </Badge>)}
+      {parts?.length && (
+        <Badge
+        key="partFeature"
+        mr={2}
+        sx={{ cursor: 'pointer', backgroundColor: "#993CCF", marginBottom: "8px", fontSize: ["14px", "auto"] }} 
+        variant="outline"
+        color="#fff"
+        >
+                {parts.length} Parts
+
+      </Badge>)}
             <Badge
         key="keywordFeature"
         mr={2}
@@ -55,7 +67,7 @@ export default function PreviewCard({
                 {keywords.split(", ")[0]}
 
       </Badge>
-      <Badge
+      {part===0 && <Badge
         key="difficultyFeature"
         mr={2}
         sx={{ cursor: 'pointer', backgroundColor: "#fff", marginBottom: "8px", fontSize: ["14px", "auto"]}} // Adjust '4px' as needed
@@ -64,7 +76,8 @@ export default function PreviewCard({
         >
                 {difficulty}
 
-      </Badge>
+      </Badge>}
+      {!parts &&
       <Badge
         key="timeFeature"
         mr={2}
@@ -73,12 +86,15 @@ export default function PreviewCard({
         color="#993CCF"
         >
         {timeEstimate}
-      </Badge>
-            </Box>) : (<Box></Box>)}
+      </Badge>}
+      
+            </Box>}
+
+
             <Box sx={{borderRadius: "16px", overflow: 'hidden',             width: '100%',
             aspectRatio: '16/9',
             objectFit: 'cover',}}>
-            {thumbnail.includes(".gif") && part == "0" ? (
+            {thumbnail?.includes(".gif") && part == "0" ? (
         <ReactFreezeframe
           src={thumbnail}
           options={{
@@ -89,7 +105,7 @@ export default function PreviewCard({
             width: '100%',
             aspectRatio: '16/9',
             zIndex: 0,
-            objectFit: 'cover',
+            objectFit: 'cover', 
             background:
               'linear-gradient(180deg, rgba(70, 10, 105, 0.40) 0%, rgba(70, 10, 105, 0.17) 24.48%, rgba(70, 10, 105, 0.00) 71.88%, rgba(70, 10, 105, 0.08) 100%), lightgray -99.453px -68.488px / 151.798% 131.707% no-repeat',
           }}
@@ -106,7 +122,7 @@ export default function PreviewCard({
         />)}
         </Box>
         </Box>
-        <Text as="h2" sx={{ fontSize: 28, lineHeight: 1.2, fontWeight: '600' }}>
+        <Text as="h2" sx={{ fontSize: 28, lineHeight: 1.2, fontWeight: '600', mt:"0.75rem" }}>
           {title}
         </Text>
       </Box>

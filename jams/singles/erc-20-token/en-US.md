@@ -4,9 +4,9 @@ description: >
   In this Jam, you'll be creating an awesome cryptocurrency which you will be able to personilize and share with others!
 contributor: 'briyandyju09'
 thumbnail: 'https://cloud-lir0xp6or-hack-club-bot.vercel.app/0crypto_thumbnail.gif'
-timeEstimate: '30 Mins'
+timeEstimate: '30 Min'
 difficulty: 'Beginner'
-keywords: 'Cryptocurrency, Token, ERC-20, Metamask, Endpoint, Solidity, Testnet'
+keywords: 'Crypto, Cryptocurrency, Token, ERC-20, Metamask, Endpoint, Solidity, Testnet'
 language: 'Solidity'
 presentation: 'https://www.figma.com/file/UFFlwD9kEFmMkygaY8yG3h/Untitled?type=design&node-id=0%3A1&mode=design&t=9UnEZB6EYxvg2aQv-1'
 presentationPlay: 'https://www.figma.com/proto/UFFlwD9kEFmMkygaY8yG3h/Untitled?type=design&node-id=2-2&t=IebotsxN9M6q3Edr-1&scaling=contain&page-id=0%3A1&mode=design'
